@@ -1,0 +1,214 @@
+<html>
+
+<head>
+	<title>Mr Clay MqttWeb</title>
+	<link rel="icon" type="icon" href="icon.png">
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+	body {
+		margin-top: 5%;
+		overflow: hidden;
+	}
+	#divConnect {
+		position: fixed;
+		width: 26%;
+		left: 5%;
+		margin-top: -25%;
+		background-color: white;
+		padding: 10px;
+		box-shadow: 5px 10px #888888;
+		border-radius: 5%;
+		height: 300px;
+	}
+
+	#divSubscribe {
+		position: fixed;
+		width: 26%;
+		left: 70%;
+		margin-top: -25%;
+		background-color: white;
+		padding: 10px;
+		box-shadow: 5px 10px #888888;
+		border-radius: 5%;
+		height: 300px;
+	}
+
+	#divPublish {
+		position: fixed;
+		margin-top: -25%;
+		width: 26%;
+		left: 38%;
+		background-color: white;
+		padding: 10px;
+		box-shadow: 5px 10px #888888;
+		border-radius: 5%;
+		height: 300px;
+	}
+
+	#messages {
+		position: relative;
+		width: 90%;
+		margin-top: 30%;
+		left: 5%;
+	}
+
+	.container{
+	  padding: 1rem;
+	  margin: 1rem;
+	}
+	.table-scroll{
+	  /*width:100%; */
+	  display: block;
+	  empty-cells: show;
+	  
+	  /* Decoration */
+	  border-spacing: 0;
+	  border: 1px solid;
+	}
+
+	.table-scroll thead{
+	  background-color: #f1f1f1;  
+	  position:relative;
+	  display: block;
+	  width:100%;
+	  overflow-y: scroll;
+	}
+
+	.table-scroll tbody{
+	  /* Position */
+	  display: block; position:relative;
+	  width:100%; overflow-y:scroll;
+	  /* Decoration */
+	  border-top: 1px solid rgba(0,0,0,0.2);
+	}
+
+	.table-scroll tr{
+	  width: 100%;
+	  display:flex;
+	}
+
+	.table-scroll td,.table-scroll th{
+	  flex-basis:100%;
+	  flex-grow:2;
+	  display: block;
+	  padding: 1rem;
+	  text-align:left;
+	}
+
+	/* Other options */
+
+	.table-scroll.small-first-col td:first-child,
+	.table-scroll.small-first-col th:first-child{
+	  flex-basis:20%;
+	  flex-grow:1;
+	}
+
+	.table-scroll tbody tr:nth-child(2n){
+	  background-color: rgba(130,130,170,0.1);
+	}
+
+	.body-half-screen{
+	  max-height: 30vh;
+	}
+
+	.small-col{flex-basis:10%;}
+
+	fieldset {
+		margin-left: 10%;
+	}
+
+	#status {
+		color: red;
+	}
+
+	span {
+		float: right;
+		position: relative;
+		top: -50%;
+	}
+
+</style>
+
+<body>
+	<div id="main">
+		<div id="divConnect">
+			<center>
+				<h2>Connect</h2>
+			</center>
+			<form>
+				<div class="form-group">
+					<label for="brokerAddress">Address</label>
+					<input type="text" class="form-control" id="brokerAddress" value="wss://test.mosquitto.org:8081/mqtt">
+				</div>
+			</form>
+			<button id="btnConnect" class="btn btn-success">Connect</button>
+			<button id="btnDisconnect" class="btn btn-danger">Disconnect</button>
+			<div>
+				<br>
+				<fieldset>
+					<legend>Status:</legend>
+					<center>
+						<i>
+							<h4 id="status">Disconnected</h4>
+						</i>
+					</center>
+				</fieldset>
+			</div>
+		</div>
+
+		<div id="divPublish">
+			<center>
+				<h2>Publish</h2>
+			</center>
+			<form>
+				<div class="form-group">
+					<label for="topicToPublish">Topic</label>
+					<input type="text" class="form-control" id="topicToPublish" value="">
+				</div>
+				<div class="form-group">
+					<label for="payloadToPublish">Payload</label>
+					<input type="text" class="form-control" id="payloadToPublish" value="">
+				</div>
+			</form>
+			<button id="btnPublish" class="btn btn-success btn-block">Publish</button>
+		</div>
+
+		<div id="divSubscribe">
+			<center>
+				<h2>Subscribe</h2>
+			</center>
+			<form>
+				<div class="form-group">
+					<label for="topicToSubscribe">Topic</label>
+					<input type="text" class="form-control" id="topicToSubscribe">
+				</div>
+			</form>
+			<button id="btnSubscribe" class="btn btn-success">Subscribe</button>
+			<button id="btnUnsubscribe" class="btn btn-danger">Unsubscribe</button>
+		</div>
+	</div>
+	<div id="container">
+		<table id="messages" class="table table-hover table-scroll small-first-col">
+			<thead id="thead">
+				<tr class="bg-primary"><center><th><h2>Messages</h2><span><button id="clearsms" class="btn btn-danger btn-lg">Clear History</button></span></th></center></tr>
+				<tr>
+					<th scope="col">Topic</th>
+					<th scope="col">Payload</th>
+					<th scope="col">Time Stamp</th>
+				</tr>
+			</thead>
+			<tbody id="tbodyContainer" class="body-half-screen">
+				<tr class="content1" style="display:none"></tr>
+			</tbody>
+		</table>
+	</div>
+
+</body>
+<script src="scripts/browserMqtt.js"></script>
+<script src="scripts/controller.js"></script>
+
+</html>
